@@ -740,7 +740,7 @@ def createEvent(username,hostid):
     city = request.form['city']
     state = request.form['state']
     zipcode = request.form['zipcode']
-    url = url_for("editGroupForm",username=username,groupname=groupname)
+    url = url_for("editGroupForm",username=username,groupname=hostid)
     cursor2 = g.conn.execute('SELECT id FROM Locations WHERE street =%s and city=%s and state=%s and zipcode = %s',street,city,state,zipcode)
     insert = cursor2.fetchone()
     
