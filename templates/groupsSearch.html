@@ -1,0 +1,136 @@
+<html>
+<head>
+  <style>
+    div.container {
+      width: 100%;
+      border: 1px solid gray;
+    }
+    h2{
+      font-size: 20pt;
+    }
+    h3{
+      font-size: 18pt;
+    }
+    header, footer {
+      padding: 1em;
+      color: white;
+      background-color: black;
+      clear: left;
+      text-align: center;
+    }
+    body{ 
+      font-size: 15pt;
+      font-family: arial;
+    }
+    nav {
+      float: top;
+      margin: 0;
+      padding: 1em;
+    }
+    table.navigation{
+      width: 100%;
+    }
+    section.sidebar{
+      padding: 1em;
+      float: left;
+      max-width: 200px;
+    }
+    section{
+      padding: 1em;
+      padding-left: 2em;
+    }
+    td{
+      text-align: left;
+    }
+    th{
+      text-align: left;
+    }
+    th.posts{
+      font-size: 10.5pt;
+    }
+    td.posts{
+      font-size: 10pt;
+    }
+    th.comments{
+      font-size: 8.5;
+    }
+    td.comments{
+      font-size: 8pt;
+    }
+    table.comments{
+      float:right;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>ExBuds - Your Go To Website For All Things Athletic</h1>
+  </header>
+  
+  <nav>
+    <table class="navigation">
+      <tr>
+        <th>
+          <a href={{url_for('home',username=user)}}>Home</a>
+        </th>
+        <th>
+          <a href={{url_for('users',username=user)}}>Users</a>
+        </th>
+        <th>
+          <a href={{url_for('groups',username=user)}}>Groups</a>
+        </th>
+        <th>
+          <a href={{url_for('events',username=user)}}>Events</a>
+        </th>
+        <th>
+          <a href={{url_for('companies',username=user)}}>Companies</a>
+        </th>
+      </tr>
+    </table>
+  </nav>
+
+<section class = "sidebar">
+  <h2>Tags</h2>
+ {% for t in tags %}
+    <div><h4>{{t['name']}}:</h4></div> <div><h6>{{t['description']}}</h6></div>
+  {% endfor %}  
+</section>
+
+<section>
+  <!--<h2>Search Groups</h2>-->
+  <div>
+    <form method="POST" action={{url_for('searchGroup',username=user)}} id="searchGroup">
+              Search Groups
+              <input type="search" name="Search">
+               by 
+              <select name="searchBy">
+                <option value="name">Name</option>
+                <option value="tag">Category</option>
+              </select>
+              <input type="submit" value="Submit">
+    </form>
+  </div>
+  <table >   
+    {% for n in groups %}
+      <table >
+          <tr>
+            <td><a href={{url_for('groupprofile',username=user,groupname=n['name'])}}>{{n['name']}}</a></td>
+            <td>{{n['description']}}</td>
+          </tr>
+          <tr>
+            <td class="l">
+            Tags: 
+            {% for t in n['tags']%}
+              {{t}} , 
+            {% endfor %}
+            </td>
+          </tr>
+      </table>
+    {% endfor %}
+  </table>
+  
+</body>
+
+
+</html>

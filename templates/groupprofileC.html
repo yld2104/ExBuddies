@@ -1,0 +1,164 @@
+<html>
+<head>
+ <style>
+    div.container {
+      width: 100%;
+      border: 1px solid gray;
+    }
+    h2{
+      font-size: 20pt;
+    }
+    h3{
+      font-size: 18pt;
+    }
+    header, footer {
+      padding: 1em;
+      color: white;
+      background-color: black;
+      clear: left;
+      text-align: center;
+    }
+    body{ 
+      font-size: 15pt;
+      font-family: arial;
+    }
+    nav {
+      float: top;
+      margin: 0;
+      padding: 1em;
+    }
+    table.navigation{
+      width: 100%;
+    }
+    section{
+      padding: 1em;
+      border-left: 1px solid gray;
+      padding-left: 2em;
+    }
+    section.sidebar{
+      padding: 1em;
+      float: left;
+      max-width: 200px;
+    }
+    td{
+      text-align: left;
+    }
+    th{
+      text-align: left;
+    }
+    th.posts{
+      font-size: 10.5pt;
+    }
+    td.posts{
+      font-size: 10pt;
+    }
+    th.comments{
+      font-size: 8.5;
+    }
+    td.comments{
+      font-size: 8pt;
+    }
+    table.comments{
+      float:right;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>ExBuds - Your Go To Website For All Things Athletic</h1>
+  </header>
+  
+ <nav>
+    <table class="navigation">
+      <tr>
+        <th>
+          <a href={{url_for('companyprofileC',companyid=companyid)}}>Home</a>
+        </th>
+        <th>
+          <a href={{url_for('eventsC',companyid=companyid)}}>Events</a>
+        </th>
+      </tr>
+    </table>
+  </nav>
+<h1 class="title">
+    {{data['name']}}
+  </h1>
+  <h2>
+    Tags: 
+    {% for t in tags %}
+      {{t}}
+    {% endfor %} 
+  </h2>
+
+<section class = "sidebar">
+    <h2>Members</h2>
+    <div>
+      {% for n in members %}
+        <div>
+          {{n['firstname']}} {{n['lastname']}}
+        </div>
+      {% endfor %}
+    </div>
+</section>
+
+<section>
+  <h2>Upcoming Events</h2>
+
+  <table>
+    <tr>
+      <th>Event Name</th><th>Description</th><th>Start</th><th>End</th>
+    </tr>
+    <tr>
+      {% for p in events %}
+        <td><a href={{url_for('eventprofileC',companyid=companyid,eventname=p['name'],hostid=data['name'])}}>{{p['name']}}</a></td>
+        <td>{{p['description']}}</td>
+        <td>{{p['start']}}</td>
+        <td>{{p['end']}}</td>
+      {% endfor %}
+    </tr>
+  </table>
+
+</section>
+
+<section>
+  <h2>Recent Posts</h2>
+  <table class = "posts">   
+    {% for n in posts %}
+      <tr class = "posts">
+        <th class = "posts">{{n['original']['firstname']}} {{n['original']['lastname']}}</th>
+        <th class = "posts">{{n['original']['likes']}}</th>
+      </tr>
+      <tr class = "posts">
+        <td class = "posts">{{n['original']['text']}}</td>
+      </tr>
+      <tr class = "postcomments">
+        <table class="comments">
+          {% for c in n['comments']%}
+            <tr class="comments">
+              <th class="comments">{{c['firstname']}} {{c['lastname']}}</th>
+              <th class="comments">{{c['likes']}}</th>
+            </tr>       
+            <tr class="comments">
+              <td class="comments">{{c['text']}}</td>
+            </tr>
+          {% endfor %}
+          <tr class="comments">  
+            <td> 
+              <form method="POST" action={{url_for('addPostC',companyid=companyid,responseto=n['original']['id'],puser='null')}} id="addComment">
+                <textarea id="addComment" columns="80" rows="3" name="text" required maxlength="1000" placeholder="Write a Comment..."></textarea>
+                <input type="submit" value="Submit">
+              </form>
+            </td>
+          </tr>
+        </table>
+      </tr>
+    {% endfor %}
+  </table>
+
+</section>
+  
+</body>
+
+
+</html>

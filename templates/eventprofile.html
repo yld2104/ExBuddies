@@ -1,0 +1,168 @@
+<html>
+<head>
+  <style>
+    div.container {
+      width: 100%;
+      border: 1px solid gray;
+    }
+    h2{
+      font-size: 20pt;
+    }
+    h3{
+      font-size: 18pt;
+    }
+    header, footer {
+      padding: 1em;
+      color: white;
+      background-color: black;
+      clear: left;
+      text-align: center;
+    }
+    body{ 
+      padding-left: 50px;
+      font-size: 15pt;
+      font-family: arial;
+    }
+    nav {
+      float: top;
+      margin: 0;
+      padding: 1em;
+    }
+    table.navigation{
+      width: 100%;
+    }
+    section.sidebar{
+      padding: 1em;
+      float: left;
+      max-width: 200px;
+    }
+    td{
+      text-align: left;
+    }
+    th{
+      text-align: left;
+    }
+    th.posts{
+      font-size: 10.5pt;
+    }
+    td.posts{
+      font-size: 10pt;
+    }
+    th.comments{
+      font-size: 8.5;
+    }
+    td.comments{
+      font-size: 8pt;
+    }
+    table.comments{
+      float:right;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>ExBuds - Your Go To Website For All Things Athletic</h1>
+  </header>
+  
+  <nav>
+    <table class="navigation">
+      <tr>
+        <th>
+          <a href={{url_for('home',username=user)}}>Home</a>
+        </th>
+        <th>
+          <a href={{url_for('users',username=user)}}>Users</a>
+        </th>
+        <th>
+          <a href={{url_for('groups',username=user)}}>Groups</a>
+        </th>
+        <th>
+          <a href={{url_for('events',username=user)}}>Events</a>
+        </th>
+        <th>
+          <a href={{url_for('companies',username=user)}}>Companies</a>
+        </th>
+      </tr>
+    </table>
+  </nav>
+
+<table>
+  <tr>
+    <td>
+      <h2>{{data['name']}}<h2>
+    </td>
+  
+    {% if status=="Interested" %}
+      <td>
+      <form method="POST" action={{url_for('updateStatus',username=user,eventname=data['name'],hostid=data['hostid'],status="Going")}}>
+            <input type="submit" value="Going">
+      </form>
+
+      <form method="POST" action={{url_for('deleteStatus',username=user,eventname=data['name'],hostid=data['hostid'])}}>
+            <input type="submit" value="Not Interested">
+      </form>
+    </td>
+    {% elif status=="Going"%}
+    <td>
+      <form method="POST" action={{url_for('deleteStatus',username=user,eventname=data['name'],hostid=data['hostid'])}}>
+            <input type="submit" value="Not Going">
+      </form>
+
+      <form method="POST" action={{url_for('updateStatus',username=user,eventname=data['name'],hostid=data['hostid'],status="Interested")}}>
+            <input type="submit" value="Interested">
+      </form>
+    </td>
+    {% else %}
+    <td>
+      <form method="POST" action={{url_for('addStatus',username=user,eventname=data['name'],hostid=data['hostid'],status="Going")}}>
+            <input type="submit" value="Going">
+      </form>
+
+      <form method="POST" action={{url_for('addStatus',username=user,eventname=data['name'],hostid=data['hostid'],status="Interested")}}>
+            <input type="submit" value="Interested">
+      </form>
+    </td>
+    {% endif %}
+</tr>
+<tr>
+  
+    <h2><td>{{going}} People Going</td> <td>{{interested}} People Interested</td></h2>
+  
+</tr>
+</table>
+<table>
+<tr>
+  
+    <h3><td>Location:</td> <td>{{data['street']}} {{data['city']}} {{data['state']}} {{data['zipcode']}}</td></h3>
+  
+</tr>
+<tr>
+  <h3>
+    <td>Time:</td><td>{{data['start']}} - {{data['end']}}</td>
+  </h3>
+  <tr>
+    
+      <h4><td>Description:</td>  <td>{{data['description']}}</td></h4>
+   
+  </tr>
+  <tr>
+    <h3><td>Sponsors:</td>
+    {% for n in sponsors %}
+      <td>
+      <a href={{url_for('companyprofile',username=user,companyid=n['id'])}}>{{n['name']}}</a>
+      </td> 
+    {% endfor %}
+    </h3>
+  </tr>
+</table>
+
+
+<section class = "sidebar">
+    </br>
+</section>
+  
+</body>
+
+
+</html>

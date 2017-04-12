@@ -1,0 +1,158 @@
+<html>
+<head>
+  <style>
+    div.container {
+      width: 100%;
+      border: 1px solid gray;
+    }
+    h2{
+      font-size: 20pt;
+    }
+    h3{
+      font-size: 18pt;
+    }
+    header, footer {
+      padding: 1em;
+      color: white;
+      background-color: black;
+      clear: left;
+      text-align: center;
+    }
+    body{ 
+      font-size: 15pt;
+      font-family: arial;
+    }
+    nav {
+      float: top;
+      margin: 0;
+      padding: 1em;
+    }
+    table.navigation{
+      width: 100%;
+    }
+    section.sidebar{
+      padding: 1em;
+      float: left;
+      max-width: 200px;
+    }
+    section{
+      padding: 1em;
+      padding-left: 2em;
+    }
+    td{
+      padding: 5px;
+      text-align: left;
+    }
+    th{
+      text-align: left;
+    }
+    th.posts{
+      font-size: 10.5pt;
+    }
+    td.posts{
+      font-size: 10pt;
+    }
+    th.comments{
+      font-size: 8.5;
+    }
+    td.comments{
+      font-size: 8pt;
+    }
+    table.comments{
+      float:right;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>ExBuds - Your Go To Website For All Things Athletic</h1>
+  </header>
+  
+  <nav>
+    <table class="navigation">
+      <tr>
+        <th>
+          <a href={{url_for('home',username=user)}}>Home</a>
+        </th>
+        <th>
+          <a href={{url_for('users',username=user)}}>Users</a>
+        </th>
+        <th>
+          <a href={{url_for('groups',username=user)}}>Groups</a>
+        </th>
+        <th>
+          <a href={{url_for('events',username=user)}}>Events</a>
+        </th>
+        <th>
+          <a href={{url_for('companies',username=user)}}>Companies</a>
+        </th>
+      </tr>
+    </table>
+  </nav>
+
+<section class = "rightbar">
+</section>
+<section class = "sidebar">  
+  </br>
+</section>
+
+<section>
+  <table >
+    <tr>Upcoming Events</tr>
+    <tr>
+      <th>Event Name</th><th>Hosted By</th><th>Start</th><th>End</th><th># Of Friends Going</th><th>Your Status</th>
+    </tr>
+    <tr>
+      {% for p in events %}
+        <td><a href={{url_for('eventprofile',username=user,eventname=p['name'],hostid=p['host'])}}>{{p['name']}}</a></td>
+        <td><a href={{url_for('groupprofile',username=user,groupname=p['host'])}}>{{p['host']}}</a></td>
+        <td>{{p['start']}}</td>
+        <td>{{p['end']}}</td>
+        <td>{{p['friends']}}</td>
+        <td>{{p['status']}}</td>
+      {% endfor %}
+    </tr>
+  </table>
+
+</section>
+
+</br>
+<section>
+  <!--<h2>Search Events</h2>-->
+  <div>
+    <form method="POST" action={{url_for('searchEvent',username=user)}} id="searchEvent">
+              Search Events
+              <input type="search" name="Search">
+               by 
+              <select name="searchBy">
+                <option value="name">Name</option>
+                <option value="description">Description</option>
+                <option value="group">Group</option>
+              </select>
+              <input type="submit" value="Submit">
+    </form>
+  </div>
+</section>
+</br>
+<section>
+  <table >
+    <tr>Recommended Events</tr>
+    <tr>
+      <th>Event Name</th><th>Hosted By</th><th>Start</th><th>End</th><th># Of Friends Going</th>
+    </tr>    
+    {% for p in recevents %}
+      <tr>
+        <td><a href={{url_for('eventprofile',username=user,eventname=p['name'],hostid=p['host'])}}>{{p['name']}}</a></td>
+        <td><a href={{url_for('groupprofile',username=user,groupname=p['host'])}}>{{p['host']}}</a></td>
+        <td>{{p['start']}}</td>
+        <td>{{p['end']}}</td>
+        <td>{{p['friends']}}</td>
+      </tr>
+    {% endfor %}
+  </table>
+ </section> 
+</body>
+
+
+</html>

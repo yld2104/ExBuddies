@@ -66,25 +66,17 @@
   <header>
     <h1>ExBuds - Your Go To Website For All Things Athletic</h1>
   </header>
-  <h1>Some famous Computer Scientists</h1>
+  
+  <h1>Select a Company to Operate As:</h1>
   <div>
-    {% for n in data %}
-    <div><a href={{url_for('home',username=n)}}>{{n}}</a></div>
+    {% for n in companies %}
+    <div><a href={{url_for('companyprofileC',companyid=n['companyid'])}}>{{n['name']}}</a></div>
     {% endfor %}
   </div>
 
-
 <section>
-  <form method="POST" action={{url_for('loginUser')}}>
-    <div>Username: <input type="text" name="username"></div>
-    <div>Password: <input type="text" name="password"></div>
-    <div><input type="submit" value="Log In"></div>
-  </form>
-</section>
-
-<section>
-  <div><a href={{url_for('createUserForm')}}>Don't have an account? Register Here</a></div>
-  <div><a href={{url_for('companyView')}}>Company View</a></div>
+  <div><a href={{url_for('createCompanyForm')}}>Create a New Company Profile</a></div>
+  <div><a href={{url_for('index')}}>User View</a></div>
 </section>
 
 </body>

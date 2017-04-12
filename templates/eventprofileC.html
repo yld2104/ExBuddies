@@ -1,0 +1,115 @@
+<html>
+<head>
+  <style>
+    div.container {
+      width: 100%;
+      border: 1px solid gray;
+    }
+    h2{
+      font-size: 20pt;
+    }
+    h3{
+      font-size: 18pt;
+    }
+    header, footer {
+      padding: 1em;
+      color: white;
+      background-color: black;
+      clear: left;
+      text-align: center;
+    }
+    body{ 
+      font-size: 15pt;
+      font-family: arial;
+    }
+    nav {
+      float: top;
+      margin: 0;
+      padding: 1em;
+    }
+    table.navigation{
+      width: 100%;
+    }
+    section{
+      padding: 1em;
+      padding-left: 2em;
+    }
+    section.sidebar{
+      padding: 1em;
+      float: left;
+      max-width: 200px;
+    }
+    td{
+      text-align: left;
+    }
+    th{
+      text-align: left;
+    }
+    th.posts{
+      font-size: 10.5pt;
+    }
+    td.posts{
+      font-size: 10pt;
+    }
+    th.comments{
+      font-size: 8.5;
+    }
+    td.comments{
+      font-size: 8pt;
+    }
+    table.comments{
+      float:right;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>ExBuds - Your Go To Website For All Things Athletic</h1>
+  </header>
+  
+    <nav>
+    <table class="navigation">
+      <tr>
+        <th>
+          <a href={{url_for('companyprofileC',companyid=companyid)}}>Home</a>
+        </th>
+        <th>
+          <a href={{url_for('eventsC',companyid=companyid)}}>Events</a>
+        </th>
+      </tr>
+    </table>
+  </nav>
+
+<h1 class="title">
+    {{data['name']}}
+    {% if status==0 %}
+      <form method="POST" action={{url_for('addSponsor',companyid=companyid,eventname=data['name'],hostid=data['hostid'])}}>
+            Contribution: <input type="text" name="contribution">
+            <input type="submit" value="Sponsor">
+      </form>
+
+    {% else %}
+      <form method="POST" action={{url_for('deleteSponsor',companyid=companyid,eventname=data['name'],hostid=data['hostid'])}}>
+            <input type="submit" value="UnSponsor">
+      </form>
+    {% endif %}
+  </h1>
+  <h2>{{going}} People Going, {{interested}} People Interested</h2>
+  <h5>Location: {{data['street']}} {{data['city']}} {{data['state']}} {{data['zipcode']}}</h5>
+  <h5>Time: {{data['start']}} - {{data['end']}}</h5>
+  <h6>Description: </br> {{data['description']}}</h6>
+  <h6>Sponsors: 
+  {% for n in sponsors %}
+    {{n['name']}}, 
+  {% endfor %}
+  </h6>
+
+<section class = "sidebar">
+    
+</section>
+  
+</body>
+
+
+</html>

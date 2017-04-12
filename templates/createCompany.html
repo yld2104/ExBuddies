@@ -1,4 +1,5 @@
 <html>
+<head>
   <style>
     div.container {
       width: 100%;
@@ -60,33 +61,44 @@
       float:right;
     }
   </style>
-
+</head>
 
 <body>
   <header>
     <h1>ExBuds - Your Go To Website For All Things Athletic</h1>
   </header>
-  <h1>Some famous Computer Scientists</h1>
-  <div>
-    {% for n in data %}
-    <div><a href={{url_for('home',username=n)}}>{{n}}</a></div>
-    {% endfor %}
-  </div>
+  
+  <nav>
+    <table class="navigation">
+      <tr>
+        <th>
+          <a href={{url_for('companyView')}}>Back to Company Selection</a>
+        </th>
+      </tr>
+    </table>
+  </nav>
 
+<section class = "form">
+  <h2> ~ Create a Company Profile ~ </h2>
+  <table>
+    <form method="POST" action={{url_for('createCompany')}}>
+      <tr>
+        <td>Name*:</td>
+        <td><input type="text" name="name" maxlength="40" minlength="2" required></td>
+      </tr>
+      <tr>
+        <td>Industry*:</td>
+        <td><input type="text" name="industry" maxlength="40" minlength="3" required></td>
+      </tr>
+      <tr>
+        <td>Commodities:</td>
+        <td><input type="text" name="commodities" maxlength="40" minlength="3"></td>
+      </tr>
+      <tr><td class = "submit"><input type="submit" value="Submit"></td></tr>
+    </form>
+  </table>
 
-<section>
-  <form method="POST" action={{url_for('loginUser')}}>
-    <div>Username: <input type="text" name="username"></div>
-    <div>Password: <input type="text" name="password"></div>
-    <div><input type="submit" value="Log In"></div>
-  </form>
-</section>
-
-<section>
-  <div><a href={{url_for('createUserForm')}}>Don't have an account? Register Here</a></div>
-  <div><a href={{url_for('companyView')}}>Company View</a></div>
-</section>
-
+  </section>
 </body>
 
 

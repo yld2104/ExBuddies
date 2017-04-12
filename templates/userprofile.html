@@ -1,0 +1,165 @@
+<html>
+<head>
+  <style>
+    div.container {
+      width: 100%;
+      border: 1px solid gray;
+    }
+    h2{
+      font-size: 20pt;
+    }
+    h3{
+      font-size: 18pt;
+    }
+    header, footer {
+      padding: 1em;
+      color: white;
+      background-color: black;
+      clear: left;
+      text-align: center;
+    }
+    body{ 
+      font-size: 15pt;
+      font-family: arial;
+    }
+    nav {
+      float: top;
+      margin: 0;
+      padding: 1em;
+    }
+    table.navigation{
+      width: 100%;
+    }
+    section.sidebar{
+      padding: 1em;
+      float: left;
+      max-width: 200px;
+    }
+    td{
+      text-align: left;
+    }
+    th{
+      text-align: left;
+    }
+    th.posts{
+      font-size: 10.5pt;
+    }
+    td.posts{
+      font-size: 10pt;
+    }
+    th.comments{
+      font-size: 8.5;
+    }
+    td.comments{
+      font-size: 8pt;
+    }
+    table.comments{
+      float:right;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>ExBuds - Your Go To Website For All Things Athletic</h1>
+  </header>
+  
+  <nav>
+    <table class="navigation">
+      <tr>
+        <th>
+          <a href={{url_for('home',username=user)}}>Home</a>
+        </th>
+        <th>
+          <a href={{url_for('users',username=user)}}>Users</a>
+        </th>
+        <th>
+          <a href={{url_for('groups',username=user)}}>Groups</a>
+        </th>
+        <th>
+          <a href={{url_for('events',username=user)}}>Events</a>
+        </th>
+        <th>
+          <a href={{url_for('companies',username=user)}}>Companies</a>
+        </th>
+      </tr>
+    </table>
+  </nav>
+
+<section class="title">
+  <table>
+    <tr>
+      <td><h1>{{data['firstname']}} {{data['lastname']}}</h1></td>
+      <td>
+      {% if status==0 %}
+        <form method="POST" action={{url_for('addFriend',username=user,usernamefriend=data['username'],pusername=data['username'])}}>
+          <input type="submit" value="Add Friend">
+        </form>
+      {% else %}
+        <form method="POST" action={{url_for('removeFriendP',username=user,usernamefriend=data['username'],pusername=data['username'])}}>
+          <input type="submit" value="Remove Friend">
+        </form>
+      {% endif %}
+     </td>
+    </tr>
+  </table>
+</section>
+
+<section class = "sidebar">
+    <h2>Mutual Friends</h2>
+    <div>
+      {% for n in mutualfriends %}
+        <div>
+          <a href={{url_for('userprofile',username=user,pusername=n['username'])}}>{{n['firstname']}} {{n['lastname']}}</a>
+
+          <form method="POST" action={{url_for('removeFriendP',username=user,usernamefriend=n['username'],pusername=data['username'])}}>
+            <input type="submit" value="Remove Friend">
+          </form>
+        </div>
+      {% endfor %}
+    </div>
+    <br>
+</section>
+
+<section>
+  <h2>Recent Posts</h2>
+  <table class = "posts">    
+    {% for n in posts %}
+      <tr class = "posts">
+        <td class = "posts">{{n['original']['firstname']}} {{n['original']['lastname']}}</td>
+      </tr>
+      <tr class = "posts">
+        <td class = "posts">{{n['original']['text']}}</td>
+      </tr>
+      <tr class = "postcomments">
+        <td>
+          <table class="comments">
+            {% for c in n['comments']%}
+              <tr class="comments">
+                <td class="comments">{{c['firstname']}} {{c['lastname']}}</td>
+              </tr>       
+              <tr class="comments">
+                <td class="comments">{{c['text']}}</td>
+              </tr>
+            {% endfor %}
+            <tr class="comments">  
+              <td> 
+                <form method="POST" action={{url_for('addPost',username=user,groupid='null',responseto=n['original']['id'],puser='null')}} id="addComment">
+                  <textarea id="addComment" cols="50" rows="2" name="text" required maxlength="1000" placeholder="Write a Comment..."></textarea>
+                  <input type="submit" value="Comment">
+                </form>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+
+</section>
+  
+</body>
+
+
+</html>
+

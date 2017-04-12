@@ -1,0 +1,94 @@
+<html>
+<head>
+  <style>
+    body{ 
+      font-size: 15pt;
+      font-family: arial;
+    }
+    table.navigation{
+      width: 100%;
+    }
+    td{
+      text-align: center;
+    }
+    section.sidebar{
+      float: left;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>ExBuds - Your Go To Website For All Things Athletic</h1>
+  </header>
+  
+  <nav>
+    <table class="navigation">
+      <tr>
+        <th>
+          <a href={{url_for('home',username=user)}}>Home</a>
+        </th>
+        <th>
+          <a href={{url_for('users',username=user)}}>Users</a>
+        </th>
+        <th>
+          <a href={{url_for('groups',username=user)}}>Groups</a>
+        </th>
+        <th>
+          <a href={{url_for('events',username=user)}}>Events</a>
+        </th>
+        <th>
+          <a href={{url_for('companies',username=user)}}>Companies</a>
+        </th>
+      </tr>
+    </table>
+  </nav>
+
+<section class = "sidebar">
+    
+</section>
+
+<section>
+  <h2>Your Groups</h2>
+  <table >    
+    {% for p in groups %}
+      <tr>
+        <td><a href={{url_for('groupprofile',username=user,groupname=p['name'])}}>{{p['name']}}</a></td>
+        <td>{{p['description']}}</td>
+      </tr>
+    {% endfor %}    
+  </table>
+</section>
+
+<section>
+  <!--<h2>Search Groups</h2>-->
+  <div>
+    <form method="POST" action={{url_for('searchGroup',username=user)}} id="searchGroup">
+              Search Groups
+              <input type="search" name="Search">
+               by 
+              <select name="searchBy">
+                <option value="name">Name</option>
+                <option value="tag">Category</option>
+              </select>
+              <input type="submit" value="Submit">
+    </form>
+  </div>
+  <table >   
+    {% for n in recgroups %}
+      <table >
+        {% for p in groups %}
+          <tr>
+            <td><a href={{url_for('groupprofile',username=user,groupname=p['name'])}}>{{p['name']}}</a></td>
+            <td>{{p['description']}}</td>
+            <td>{{p['cfriends']}} friend in group</td>
+          </tr>
+        {% endfor %}       
+      </table>
+    {% endfor %}
+  </table>
+  
+</body>
+
+
+</html>

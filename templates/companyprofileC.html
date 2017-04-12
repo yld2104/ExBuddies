@@ -1,0 +1,252 @@
+<html>
+<head>
+  <style>
+    div.container {
+      width: 100%;
+      border: 1px solid gray;
+    }
+    h2{
+      font-size: 20pt;
+    }
+    h3{
+      font-size: 18pt;
+    }
+    header, footer {
+      padding: 1em;
+      color: white;
+      background-color: black;
+      clear: left;
+      text-align: center;
+    }
+    body{ 
+      font-size: 15pt;
+      font-family: arial;
+    }
+    nav {
+      float: top;
+      margin: 0;
+      padding: 1em;
+    }
+    table.navigation{
+      width: 100%;
+    }
+    section{
+      padding: 1em;
+      padding-left: 2em;
+    }
+    section.sidebar{
+      padding: 1em;
+      float: left;
+      max-width: 200px;
+    }
+    td{
+      text-align: left;
+    }
+    th{
+      text-align: left;
+    }
+    th.posts{
+      font-size: 10.5pt;
+    }
+    td.posts{
+      font-size: 10pt;
+    }
+    th.comments{
+      font-size: 8.5;
+    }
+    td.comments{
+      font-size: 8pt;
+    }
+    table.comments{
+      float:right;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>ExBuds - Your Go To Website For All Things Athletic</h1>
+  </header>
+  
+  <nav>
+    <table class="navigation">
+      <tr>
+        <th>
+          <a href={{url_for('companyprofileC',companyid=companyid)}}>Home</a>
+        </th>
+        <th>
+          <a href={{url_for('eventsC',companyid=companyid)}}>Events</a>
+        </th>
+      </tr>
+    </table>
+  </nav>
+<section class="title">
+  <table>
+    <tr>
+      <td><h1>{{data['name']}}</h1></td>
+    </tr>
+    <tr>
+      <td><h2>{{data['industry']}}</h2></td>
+    </tr>
+    <tr>
+      <td><h2>Commodities: {{data['commodities']}}</h2></td>
+    </tr>
+  </table>
+</section>
+
+<section class = "sidebar">
+    <h2>Retail Locations</h2>
+    <div>
+      {% for n in retails %}
+        <div>
+          {{n['street']}} {{n['city']}} {{n['state']}} {{n['zipcode']}}
+          <form method="POST" action={{url_for('deleteRetail',companyid=companyid,locationid=n['locationid'])}}>
+            <input type="submit" value="Delete Retail">
+          </form>
+        </div>
+      {% endfor %}
+    </div>
+    <div>
+      <table>
+      <form method="POST" action={{url_for('addRetail',companyid=companyid)}}>
+          <tr>
+            <td>Street: <input type="text" name="street" minlength="1" maxlength="30" required></td>
+          </tr>
+          <tr>
+            <td>City: <input type="text" name="city" minlength="1" maxlength = "20" required></td>
+          </tr>
+          <tr>
+            <td>State: <select name="state" required>
+              <option value="AL">Alabama</option>
+              <option value="AK">Alaska</option>
+              <option value="AZ">Arizona</option>
+              <option value="AR">Arkansas</option>
+              <option value="CA">California</option>
+              <option value="CO">Colorado</option>
+              <option value="CT">Connecticut</option>
+              <option value="DE">Delaware</option>
+              <option value="DC">District Of Columbia</option>
+              <option value="FL">Florida</option>
+              <option value="GA">Georgia</option>
+              <option value="HI">Hawaii</option>
+              <option value="ID">Idaho</option>
+              <option value="IL">Illinois</option>
+              <option value="IN">Indiana</option>
+              <option value="IA">Iowa</option>
+              <option value="KS">Kansas</option>
+              <option value="KY">Kentucky</option>
+              <option value="LA">Louisiana</option>
+              <option value="ME">Maine</option>
+              <option value="MD">Maryland</option>
+              <option value="MA">Massachusetts</option>
+              <option value="MI">Michigan</option>
+              <option value="MN">Minnesota</option>
+              <option value="MS">Mississippi</option>
+              <option value="MO">Missouri</option>
+              <option value="MT">Montana</option>
+              <option value="NE">Nebraska</option>
+              <option value="NV">Nevada</option>
+              <option value="NH">New Hampshire</option>
+              <option value="NJ">New Jersey</option>
+              <option value="NM">New Mexico</option>
+              <option value="NY">New York</option>
+              <option value="NC">North Carolina</option>
+              <option value="ND">North Dakota</option>
+              <option value="OH">Ohio</option>
+              <option value="OK">Oklahoma</option>
+              <option value="OR">Oregon</option>
+              <option value="PA">Pennsylvania</option>
+              <option value="RI">Rhode Island</option>
+              <option value="SC">South Carolina</option>
+              <option value="SD">South Dakota</option>
+              <option value="TN">Tennessee</option>
+              <option value="TX">Texas</option>
+              <option value="UT">Utah</option>
+              <option value="VT">Vermont</option>
+              <option value="VA">Virginia</option>
+              <option value="WA">Washington</option>
+              <option value="WV">West Virginia</option>
+              <option value="WI">Wisconsin</option>
+              <option value="WY">Wyoming</option>
+            </select></td>
+          </tr>
+          <tr>
+            <td>Zipcode: <input type="text" name="zipcode" minlength="5" maxlength="10" size="10" required></td>
+          </tr>
+          <tr>
+            <input type="submit" value="Add Retail">
+          </tr>
+      </form>
+    </table>
+    </div>
+</section>
+
+<section>
+  <h2>Sponsered Events</h2>
+
+  <table>
+    <tr>
+      <th>Event Name</th><th>Hosted By</th><th>Description</th><th>Start</th><th>End</th>
+    </tr>
+      {% for p in events %}
+        <tr>
+        <td><a href={{url_for('eventprofileC',companyid=companyid,eventname=p['name'],hostid=p['host'])}}>{{p['name']}}</a></td>
+        <td><a href={{url_for('groupprofileC',companyid=companyid,groupname=p['host'])}}>{{p['host']}}</a></td>
+        <td>{{p['description']}}</td>
+        <td>{{p['start']}}</td>
+        <td>{{p['end']}}</td>
+        </tr>
+      {% endfor %}
+  </table>
+
+</section>
+
+<section>
+  <h2>Recent Posts</h2>
+  <table class = "posts">
+    <tr>
+        <td> 
+          <form method="POST" action={{url_for('addPostC',companyid=companyid,responseto='0')}} id="addPost">
+            <textarea id="addPost" cols="100" rows="3" name="text" required maxlength="1000" placeholder="Make a Post..."></textarea>
+            <input type="submit" value="Post">
+          </form>
+        </td>
+    </tr>       
+    {% for n in posts %}
+      <tr class = "posts">
+        <th class = "posts">{{n['original']['firstname']}} {{n['original']['lastname']}}</th>
+        <th class = "posts">{{n['original']['likes']}}</th>
+      </tr>
+      <tr class = "posts">
+        <td class = "posts">{{n['original']['text']}}</td>
+      </tr>
+      <tr class = "postcomments">
+        <table class="comments">
+          {% for c in n['comments']%}
+            <tr class="comments">
+              <th class="comments">{{c['firstname']}} {{c['lastname']}}</th>
+              <th class="comments">{{c['likes']}}</th>
+            </tr>       
+            <tr class="comments">
+              <td class="comments">{{c['text']}}</td>
+            </tr>
+          {% endfor %}
+          <tr class="comments">  
+            <td> 
+              <form method="POST" action={{url_for('addPostC',companyid=companyid,responseto=n['original']['id'])}} id="addComment">
+                <textarea id="addComment" cols="80" rows="3" name="text" required maxlength="1000" placeholder="Write a Comment..."></textarea>
+                <input type="submit" value="Comment">
+              </form>
+            </td>
+          </tr>
+        </table>
+      </tr>
+    {% endfor %}
+  </table>
+
+</section>
+  
+</body>
+
+
+</html>

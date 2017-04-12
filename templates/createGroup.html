@@ -1,0 +1,137 @@
+<html>
+<head>
+  <style>
+    div.container {
+      width: 100%;
+      border: 1px solid gray;
+    }
+    h2{
+      font-size: 20pt;
+    }
+    h3{
+      font-size: 18pt;
+    }
+    header, footer {
+      padding: 1em;
+      color: white;
+      background-color: black;
+      clear: left;
+      text-align: center;
+    }
+    body{ 
+      font-size: 15pt;
+      font-family: arial;
+    }
+    nav {
+      float: top;
+      margin: 0;
+      padding: 1em;
+    }
+    table.navigation{
+      width: 100%;
+    }
+    section{
+      padding: 1em;
+      padding-left: 2em;
+    }
+    section.sidebar{
+      padding: 1em;
+      float: left;
+      max-width: 200px;
+    }
+    td{
+      text-align: left;
+    }
+    th{
+      text-align: left;
+    }
+    th.posts{
+      font-size: 10.5pt;
+    }
+    td.posts{
+      font-size: 10pt;
+    }
+    th.comments{
+      font-size: 8.5;
+    }
+    td.comments{
+      font-size: 8pt;
+    }
+    table.comments{
+      float:right;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>ExBuds - Your Go To Website For All Things Athletic</h1>
+  </header>
+  
+  <nav>
+    <table class="navigation">
+      <tr>
+        <th>
+          <a href={{url_for('home',username=user)}}>Home</a>
+        </th>
+        <th>
+          <a href={{url_for('users',username=user)}}>Users</a>
+        </th>
+        <th>
+          <a href={{url_for('groups',username=user)}}>Groups</a>
+        </th>
+        <th>
+          <a href={{url_for('events',username=user)}}>Events</a>
+        </th>
+        <th>
+          <a href={{url_for('companies',username=user)}}>Companies</a>
+        </th>
+      </tr>
+    </table>
+  </nav>
+
+<section class = "sidebar"> 
+</section>
+<section class = "newTag">
+  <h2> Add New Tag </h2>
+  <form method="POST" action={{url_for('addCategory',username=user)}} id="addTag">
+              name: 
+              <input type="text" name="name" required>
+              description: 
+              <input type="text" name="description">
+              <input type="submit" value="Add">
+  </form>
+</section>
+<section class = "form">
+  <h2>Create a Group</h2>
+  
+    <form method="POST" action={{url_for('createGroup',username=user)}}>
+      <table>
+      <tr>
+        <td>Group Name:</td>
+        <td><input type="text" minlength="4" maxlength="100" name="name" required></td>
+      </tr>
+      <tr>
+        <td>Description</td>
+        <td>
+        <textarea id="createGroup" rows="5" cols="50" name="text" maxlength="500"></textarea>
+        </td>
+      </tr>
+    </table>
+    <table>
+      <tr><td>Tags:</td></tr>
+        {% for t in tags %}
+          <tr class = "tags">
+            <td>
+            <input type="checkbox" name="tag" value={{t['name']}}> {{t['name']}}: {{t['description']}}
+            </td>
+          </tr>
+        {% endfor %}
+        <tr><td class = "submit"><input type="submit" value="Submit"></td></tr>
+      </table>
+    </form>
+  </section>
+</body>
+
+
+</html>
