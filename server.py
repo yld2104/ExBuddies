@@ -148,10 +148,7 @@ def home(username):
             up = r3.fetchone()
             if cp is not None:
               data2 = dict(id=r['id'], firstname=cp['name'], lastname="", userid=cp['companyid'], text=r['text'], group=None)
-              if companyid==cp['companyid']:
-                data2['owner'] = 1
-              else:
-                data2['owner'] = 0
+              data2['owner'] = 0
               comments.append(data2)
             if up is not None:
               data2 = dict(id=r['id'], firstname=up['firstname'], lastname=up['lastname'], userid=up['userid'], text=r['text'], group=up['groupid'])
