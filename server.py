@@ -58,9 +58,10 @@ def teardown_request(exception):
 
 @app.route('/')
 def index():
+  return render_template("index.html")
 
-  # DEBUG: this is debugging code to see what request looks like
-  print request.args
+@app.route('/demoIndex')
+def demo():
 
   cursor = g.conn.execute("SELECT username FROM Users")
   names = []
@@ -70,7 +71,7 @@ def index():
   
   context = dict(data = names)
 
-  return render_template("index.html", **context)
+  return render_template("demo.html", **context)
 
 @app.route('/loginUser', methods=['POST'])
 def loginUser():
