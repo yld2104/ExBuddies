@@ -1,6 +1,6 @@
 #COMS W4111 Course Project
 ###The PostgreSQL account: yld2104
-###Members: Jason Cheuk Nam Liang, Yingfan Linda Du
+###Members: Yingfan Linda Du, Jason Cheuk Nam Liang
 ###The URL of your web application: http://35.185.113.189:8111/
 
 ###Parts implemented:
