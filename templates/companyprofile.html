@@ -140,7 +140,14 @@
   <table class = "posts">    
     {% for n in posts %}
       <tr class = "posts">
-        <td class = "posts">{{n['original']['firstname']}} {{n['original']['lastname']}}</td>
+        <th class = "posts">{{n['original']['firstname']}} {{n['original']['lastname']}}</th>
+        {% if n['original']['owner'] == 1 %}
+          <th>
+            <form method="POST" action={{url_for('deletePost',username=user,postid=n['original']['id'],groupname='null',puser='null',companyid=data['companyid'])}}>
+              <input type="submit" value="Delete">
+            </form>
+          </th>
+        {% endif %}
       </tr>
       <tr class = "posts">
         <td class = "posts">{{n['original']['text']}}</td>
@@ -150,7 +157,14 @@
           <table class="comments">
             {% for c in n['comments']%}
               <tr class="comments">
-                <td class="comments">{{c['firstname']}} {{c['lastname']}}</td>
+                <th class="comments">{{c['firstname']}} {{c['lastname']}}</th>
+                {% if c['owner'] == 1 %}
+                <th>
+                  <form method="POST" action={{url_for('deletePost',username=user,postid=c['id'],groupname='null',puser='null',companyid=data['companyid'])}}>
+                    <input type="submit" value="Delete">
+                  </form>
+                </th>
+              {% endif %}
               </tr>       
               <tr class="comments">
                 <td class="comments">{{c['text']}}</td>
@@ -158,7 +172,7 @@
             {% endfor %}
             <tr class="comments">  
               <td> 
-                <form method="POST" action={{url_for('addPost',username=user,groupid='null',responseto=n['original']['id'],puser='null')}} id="addComment">
+                <form method="POST" action={{url_for('addPost',username=user,groupid='null',responseto=n['original']['id'],puser='null',companyid=data['companyid'])}} id="addComment">
                   <textarea id="addComment" cols="50" rows="2" name="text" required maxlength="1000" placeholder="Write a Comment..."></textarea>
                   <input type="submit" value="Comment">
                 </form>

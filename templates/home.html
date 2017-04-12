@@ -159,7 +159,7 @@
   <table class = "posts">
     <tr>
         <td> 
-          <form method="POST" action={{url_for('addPost',username=user,groupid='null',responseto='0',puser='null')}} id="addPost">
+          <form method="POST" action={{url_for('addPost',username=user,groupid='null',responseto='0',puser='null',companyid="0")}} id="addPost">
             <textarea id="addPost" cols="100" rows="3" name="text" required maxlength="1000" placeholder="Make a Post..."></textarea>
             <input type="submit" value="Post">
           </form>
@@ -167,7 +167,14 @@
     </tr>    
     {% for n in posts %}
       <tr class = "posts">
-        <td class = "posts">{{n['original']['firstname']}} {{n['original']['lastname']}}</td>
+        <th class = "posts">{{n['original']['firstname']}} {{n['original']['lastname']}}</th>
+        {% if n['original']['owner'] == 1 %}
+          <th>
+            <form method="POST" action={{url_for('deletePost',username=user,postid=n['original']['id'],groupname='null',puser='null',companyid="0")}}>
+              <input type="submit" value="Delete">
+            </form>
+          </th>
+        {% endif %}
       </tr>
       <tr class = "posts">
         <td class = "posts">{{n['original']['text']}}</td>
@@ -177,7 +184,14 @@
           <table class="comments">
             {% for c in n['comments']%}
               <tr class="comments">
-                <td class="comments">{{c['firstname']}} {{c['lastname']}}</td>
+                <th class="comments">{{c['firstname']}} {{c['lastname']}}</th>
+                {% if c['owner'] == 1 %}
+                <th>
+                  <form method="POST" action={{url_for('deletePost',username=user,postid=c['id'],groupname='null',puser='null',companyid="0")}}>
+                    <input type="submit" value="Delete">
+                  </form>
+                </th>
+              {% endif %}
               </tr>       
               <tr class="comments">
                 <td class="comments">{{c['text']}}</td>
@@ -185,7 +199,7 @@
             {% endfor %}
             <tr class="comments">  
               <td> 
-                <form method="POST" action={{url_for('addPost',username=user,groupid='null',responseto=n['original']['id'],puser='null')}} id="addComment">
+                <form method="POST" action={{url_for('addPost',username=user,groupid='null',responseto=n['original']['id'],puser='null',companyid="0")}} id="addComment">
                   <textarea id="addComment" cols="50" rows="2" name="text" required maxlength="1000" placeholder="Write a Comment..."></textarea>
                   <input type="submit" value="Comment">
                 </form>

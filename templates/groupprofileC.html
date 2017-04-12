@@ -127,17 +127,30 @@
     {% for n in posts %}
       <tr class = "posts">
         <th class = "posts">{{n['original']['firstname']}} {{n['original']['lastname']}}</th>
-        <th class = "posts">{{n['original']['likes']}}</th>
+        {% if n['owner'] == 1 %}
+        <th>
+          <form method="POST" action={{url_for('deletePostC',companyid=companyid,postid=n['id'],groupname=data['name'])}}>
+            <input type="submit" value="Delete">
+          </form>
+        </th>
+        {% endif %}
       </tr>
       <tr class = "posts">
         <td class = "posts">{{n['original']['text']}}</td>
       </tr>
       <tr class = "postcomments">
+        <td>
         <table class="comments">
           {% for c in n['comments']%}
             <tr class="comments">
               <th class="comments">{{c['firstname']}} {{c['lastname']}}</th>
-              <th class="comments">{{c['likes']}}</th>
+              {% if c['owner'] == 1 %}
+                <th>
+                  <form method="POST" action={{url_for('deletePostC',companyid=companyid,postid=c['id'],groupname=data['name'])}}>
+                    <input type="submit" value="Delete">
+                  </form>
+                </th>
+              {% endif %}
             </tr>       
             <tr class="comments">
               <td class="comments">{{c['text']}}</td>
@@ -145,13 +158,14 @@
           {% endfor %}
           <tr class="comments">  
             <td> 
-              <form method="POST" action={{url_for('addPostC',companyid=companyid,responseto=n['original']['id'],puser='null')}} id="addComment">
+              <form method="POST" action={{url_for('addPostC',companyid=companyid,responseto=n['original']['id'],groupname=data['name'])}} id="addComment">
                 <textarea id="addComment" columns="80" rows="3" name="text" required maxlength="1000" placeholder="Write a Comment..."></textarea>
                 <input type="submit" value="Submit">
               </form>
             </td>
           </tr>
         </table>
+        </td>
       </tr>
     {% endfor %}
   </table>

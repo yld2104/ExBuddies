@@ -135,6 +135,10 @@ def home(username):
     messages = []
     for result in cursor:
         data = dict(id=result['postid'], firstname=result['firstname'], lastname=result['lastname'], userid=result['userid'],text=result['text'],group=result['groupid'])
+        if username==result['userid']:
+          data['owner'] = 1
+        else:
+          data['owner'] = 0 
         cursor2 = g.conn.execute("SELECT * FROM Posts AS P WHERE P.responseto = %s ORDER BY P.timestamp ASC",data['id'])
         comments = []
         for r in cursor2:
@@ -144,10 +148,18 @@ def home(username):
             up = r3.fetchone()
             if cp is not None:
               data2 = dict(id=r['id'], firstname=cp['name'], lastname="", userid=cp['companyid'], text=r['text'], group=None)
+              if companyid==cp['companyid']:
+                data2['owner'] = 1
+              else:
+                data2['owner'] = 0
               comments.append(data2)
             if up is not None:
               data2 = dict(id=r['id'], firstname=up['firstname'], lastname=up['lastname'], userid=up['userid'], text=r['text'], group=up['groupid'])
               comments.append(data2)
+              if username==up['userid']:
+                data2['owner'] = 1
+              else:
+                data2['owner'] = 0 
             r2.close()
             r3.close()
         cursor2.close()
@@ -233,7 +245,7 @@ def events(username):
 
     #RecommendedEvents
     recevents = []
-    cursor = g.conn.execute("SELECT E.name, E.hostid, COUNT(*) AS f FROM Events AS E INNER JOIN UserParticipates AS U ON E.hostid = U.hostid AND E.name = U.eventname WHERE U.userid IN (SELECT user2id FROM Friends WHERE user1id = %s) and NOT EXISTS (SELECT * FROM UserParticipates WHERE eventname = E.name AND hostid = E.hostid AND userid = %s) GROUP BY E.name, E.hostid ORDER BY COUNT(*) DESC LIMIT 10",username,username)
+    cursor = g.conn.execute("SELECT E.name, E.hostid, COUNT(*) AS f FROM Events AS E INNER JOIN UserParticipates AS U ON E.hostid = U.hostid AND E.name = U.eventname WHERE U.userid IN (SELECT user2id FROM Friends WHERE user1id = %s) and NOT EXISTS (SELECT * FROM UserParticipates WHERE eventname = E.name AND hostid = E.hostid AND userid = %s) AND E.endtime > now() GROUP BY E.name, E.hostid ORDER BY COUNT(*) DESC LIMIT 10",username,username)
     for r in cursor:
         cursor2 = g.conn.execute("SELECT * FROM Events WHERE hostid=%s and name=%s",r['hostid'],r['name'])
         result=cursor2.fetchone()
@@ -293,6 +305,7 @@ def userprofile(username, pusername):
     messages = []
     for result in cursor:
         data = dict(id=result['postid'], firstname=result['firstname'], lastname=result['lastname'], userid=result['userid'],text=result['text'],group=result['groupid'])
+        data['owner'] = 0 
         cursor2 = g.conn.execute("SELECT * FROM Posts AS P WHERE P.responseto = %s ORDER BY P.timestamp ASC",data['id'])
         comments = []
         for r in cursor2:
@@ -302,10 +315,15 @@ def userprofile(username, pusername):
             up = r3.fetchone()
             if cp is not None:
               data2 = dict(id=r['id'], firstname=cp['name'], lastname="", userid=cp['companyid'], text=r['text'], group=None)
+              data2['owner'] = 0
               comments.append(data2)
             if up is not None:
               data2 = dict(id=r['id'], firstname=up['firstname'], lastname=up['lastname'], userid=up['userid'], text=r['text'], group=up['groupid'])
               comments.append(data2)
+              if username==up['userid']:
+                data2['owner'] = 1
+              else:
+                data2['owner'] = 0 
             r2.close()
             r3.close()
         cursor2.close()
@@ -439,6 +457,10 @@ def groupprofile(username, groupname):
     messages = []
     for result in cursor:
         data = dict(id=result['postid'], firstname=result['firstname'], lastname=result['lastname'], userid=result['userid'],text=result['text'],group=result['groupid'])
+        if username==result['userid']:
+          data['owner'] = 1
+        else:
+          data['owner'] = 0 
         cursor2 = g.conn.execute("SELECT * FROM Posts AS P WHERE P.responseto = %s ORDER BY P.timestamp ASC",data['id'])
         comments = []
         for r in cursor2:
@@ -448,10 +470,15 @@ def groupprofile(username, groupname):
             up = r3.fetchone()
             if cp is not None:
               data2 = dict(id=r['id'], firstname=cp['name'], lastname="", userid=cp['companyid'], text=r['text'], group=None)
+              data2['owner'] = 0
               comments.append(data2)
             if up is not None:
               data2 = dict(id=r['id'], firstname=up['firstname'], lastname=up['lastname'], userid=up['userid'], text=r['text'], group=up['groupid'])
               comments.append(data2)
+              if username==up['userid']:
+                data2['owner'] = 1
+              else:
+                data2['owner'] = 0 
             r2.close()
             r3.close()
         cursor2.close()
@@ -501,6 +528,7 @@ def groupprofileC(companyid, groupname):
     messages = []
     for result in cursor:
         data = dict(id=result['postid'], firstname=result['firstname'], lastname=result['lastname'], userid=result['userid'],text=result['text'],group=result['groupid'])
+        data['owner'] = 0
         cursor2 = g.conn.execute("SELECT * FROM Posts AS P WHERE P.responseto = %s ORDER BY P.timestamp ASC",data['id'])
         comments = []
         for r in cursor2:
@@ -510,10 +538,18 @@ def groupprofileC(companyid, groupname):
             up = r3.fetchone()
             if cp is not None:
               data2 = dict(id=r['id'], firstname=cp['name'], lastname="", userid=cp['companyid'], text=r['text'], group=None)
+              if companyid==cp['companyid']:
+                data2['owner'] = 1
+              else:
+                data2['owner'] = 0
               comments.append(data2)
             if up is not None:
               data2 = dict(id=r['id'], firstname=up['firstname'], lastname=up['lastname'], userid=up['userid'], text=r['text'], group=up['groupid'])
               comments.append(data2)
+              if username==up['userid']:
+                data2['owner'] = 1
+              else:
+                data2['owner'] = 0 
             r2.close()
             r3.close()
         cursor2.close()
@@ -559,6 +595,7 @@ def companyprofile(username, companyid):
     messages = []
     for result in cursor:
         data = dict(id=result['postid'], firstname=result['name'], lastname="", userid=result['companyid'], text=result['text'], group=None)
+        data['owner'] = 0
         cursor2 = g.conn.execute("SELECT * FROM Posts AS P WHERE P.responseto = %s ORDER BY P.timestamp ASC",data['id'])
         comments = []
         for r in cursor2:
@@ -568,10 +605,15 @@ def companyprofile(username, companyid):
             up = r3.fetchone()
             if cp is not None:
               data2 = dict(id=r['id'], firstname=cp['name'], lastname="", userid=cp['companyid'], text=r['text'], group=None)
+              data2['owner'] = 0
               comments.append(data2)
             if up is not None:
               data2 = dict(id=r['id'], firstname=up['firstname'], lastname=up['lastname'], userid=up['userid'], text=r['text'], group=up['groupid'])
               comments.append(data2)
+              if username==up['userid']:
+                data2['owner'] = 1
+              else:
+                data2['owner'] = 0 
             r2.close()
             r3.close()
         cursor2.close()
@@ -609,6 +651,7 @@ def companyprofileC(companyid):
     messages = []
     for result in cursor:
         data = dict(id=result['postid'], firstname=result['name'], lastname="", userid=result['companyid'], text=result['text'], group=None)
+        data['owner']=1
         cursor2 = g.conn.execute("SELECT * FROM Posts AS P WHERE P.responseto = %s ORDER BY P.timestamp ASC",data['id'])
         comments = []
         for r in cursor2:
@@ -618,10 +661,15 @@ def companyprofileC(companyid):
             up = r3.fetchone()
             if cp is not None:
               data2 = dict(id=r['id'], firstname=cp['name'], lastname="", userid=cp['companyid'], text=r['text'], group=None)
+              if companyid==cp['companyid']:
+                data2['owner'] = 1
+              else:
+                data2['owner'] = 0
               comments.append(data2)
             if up is not None:
               data2 = dict(id=r['id'], firstname=up['firstname'], lastname=up['lastname'], userid=up['userid'], text=r['text'], group=up['groupid'])
               comments.append(data2)
+              data2['owner'] = 0 
             r2.close()
             r3.close()
         cursor2.close()
@@ -965,7 +1013,7 @@ def searchEvent(username):
 
     #Search by Name(name, hostid, description, start, end, locationid, street, city, state, zipcode)
     if method=='name':
-      cursor = g.conn.execute("SELECT * FROM Events INNER JOIN Locations ON Events.locationid=Locations.id WHERE name LIKE concat(\'%%\',%s,\'%%\')",search)
+      cursor = g.conn.execute("SELECT * FROM Events INNER JOIN Locations ON Events.locationid=Locations.id WHERE name LIKE concat(\'%%\',%s,\'%%\') ORDER BY starttime",search)
       for result in cursor:
         eventdata = dict(name=result['name'],hostid=result['hostid'],start=result['starttime'],end=result['endtime'],description=result['description'], locationid=result['locationid'], street=result['street'], city=result['city'],state=result['state'],zipcode=result['zipcode'])
         cursor2 = g.conn.execute("SELECT COUNT(*) AS friends FROM Events AS E INNER JOIN UserParticipates AS U ON E.hostid = U.hostid AND E.name = U.eventname WHERE U.userid IN (SELECT user2id FROM Friends WHERE user1id = %s) AND E.name = %s AND E.hostid = %s",username,eventdata['name'],eventdata['hostid'])
@@ -985,7 +1033,7 @@ def searchEvent(username):
 
     #Search by Description(name, hostid, description, start, end, locationid, street, city, state, zipcode)
     if method=='description':
-      cursor = g.conn.execute("SELECT * FROM Events INNER JOIN Locations ON Events.locationid=Locations.id WHERE description LIKE concat(\'%%\',%s,\'%%\')",search)
+      cursor = g.conn.execute("SELECT * FROM Events INNER JOIN Locations ON Events.locationid=Locations.id WHERE description LIKE concat(\'%%\',%s,\'%%\') ORDER BY starttime",search)
       for result in cursor:
         eventdata = dict(name=result['name'],hostid=result['hostid'],start=result['starttime'],end=result['endtime'],description=result['description'], locationid=result['locationid'], street=result['street'], city=result['city'],state=result['state'],zipcode=result['zipcode'])
         cursor3 = g.conn.execute("SELECT * FROM UserParticipates WHERE userid=%s and hostid=%s and eventname=%s",username,result['hostid'],result['name'])
@@ -1177,8 +1225,8 @@ def searchCompany(username):
 
     return render_template("companySearch.html",**context)
 
-@app.route('/<username>/addPost/<groupid>/<int:responseto>/<puser>', methods=['POST'])
-def addPost(username,groupid,responseto,puser):
+@app.route('/<username>/addPost/<groupid>/<int:responseto>/<puser>/<int:companyid>', methods=['POST'])
+def addPost(username,groupid,responseto,puser,companyid):
     url = None
     text = request.form['text']
 
@@ -1187,7 +1235,10 @@ def addPost(username,groupid,responseto,puser):
 
     elif puser!='null':
       url = url_for('userprofile',username=username,pusername=puser)
-      
+    
+    elif companyid!=0:
+      url = url_for('companyprofile',username=username,companyid=companyid)
+ 
     else:
       url = url_for('home',username=username)
     
@@ -1219,9 +1270,13 @@ def addPost(username,groupid,responseto,puser):
 
     return redirect(url)
 
-@app.route('/<int:companyid>/addPostC/<int:responseto>', methods=['POST'])
-def addPostC(companyid,responseto):
+@app.route('/<int:companyid>/addPostC/<int:responseto>/<groupname>', methods=['POST'])
+def addPostC(companyid,responseto,groupname):
     text = request.form['text']
+    url = url_for('companyprofileC',companyid=companyid)
+    if groupname != "null":
+        url = url_for('groupprofileC',companyid=companyid,groupname=groupname)
+
     try:
       if responseto==0:
         r = g.conn.execute('INSERT INTO Posts(text) VALUES (%s) RETURNING id',text)
@@ -1235,7 +1290,30 @@ def addPostC(companyid,responseto):
         g.conn.execute('INSERT INTO Company_Posts(postid,companyid) VALUES(%s,%s)',id,companyid)            
     except exc.SQLAlchemyError:
       pass
-    return redirect(url_for('companyprofileC',companyid=companyid))
+    return redirect(url)
+
+@app.route('/<int:companyid>/deletePostC/<int:postid>/<groupname>/', methods=['POST'])
+def deletePostC(companyid,postid,groupname):
+    url = url_for('companyprofileC',companyid=companyid)
+    if groupname != "null":
+        url = url_for('groupprofileC',companyid=companyid,groupname=groupname)
+
+    g.conn.execute('DELETE FROM Posts WHERE id=%s',postid)    
+    return redirect(url)
+
+@app.route('/<username>/deletePost/<int:postid>/<puser>/<groupname>/<int:companyid>', methods=['POST'])
+def deletePost(username,postid,puser,groupname,companyid):
+    url = url_for('home',username=username)
+    if companyid > 0:
+        url = url_for('companyprofile',username=username,companyid=companyid)
+    elif groupname != "null":
+        url = url_for('groupprofile',username=username,groupname=groupname)
+    elif puser != "null":
+        url = url_for('userprofile',username=username,pusername=puser)
+
+    g.conn.execute('DELETE FROM Posts WHERE id=%s',postid)    
+    return redirect(url)
+
 
 @app.route('/login')
 def login():
