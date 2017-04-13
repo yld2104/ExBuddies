@@ -130,16 +130,18 @@
     <tr>
       <th>Event Name</th><th>Description</th><th>Start</th><th>End</th><th># Of Friends Going</th><th>Your Status</th>
     </tr>
-    <tr>
+    
       {% for p in events %}
+      <tr>
         <td><a href={{url_for('eventprofile',username=user,eventname=p['name'],hostid=data['name'])}}>{{p['name']}}</a></td>
         <td>{{p['description']}}</td>
         <td>{{p['start']}}</td>
         <td>{{p['end']}}</td>
         <td>{{p['friends']}}</td>
         <td>{{p['status']}}</td>
+        </tr>
       {% endfor %}
-    </tr>
+    
   </table>
 
 </section>
