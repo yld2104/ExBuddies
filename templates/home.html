@@ -123,7 +123,7 @@
     <h3>Pending Friends</h3>
     <div>
       {% for n in pfriends %}
-        <div
+        <div>
           <a href={{url_for('userprofile',username=user,pusername=n['username'])}}>{{n['firstname']}} {{n['lastname']}}</a>
 
           <form method="POST" action={{url_for('addFriend',username=user,usernamefriend=n['username'])}}>
