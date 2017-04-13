@@ -543,9 +543,6 @@ def groupprofileC(companyid, groupname):
             if up is not None:
               data2 = dict(id=r['id'], firstname=up['firstname'], lastname=up['lastname'], userid=up['userid'], text=r['text'], group=up['groupid'])
               comments.append(data2)
-              if username==up['userid']:
-                data2['owner'] = 1
-              else:
                 data2['owner'] = 0 
             r2.close()
             r3.close()
