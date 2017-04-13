@@ -921,7 +921,7 @@ def updateEvent(username,hostid,eventname):
 
 @app.route('/<username>/deleteGroup/<groupname>', methods=['POST'])
 def deleteGroup(username,groupname):
-    g.conn.execute('DELETE FROM Groups WHERE groupname=%s',groupname)    
+    g.conn.execute('DELETE FROM Groups WHERE name=%s',groupname)    
     return redirect(url_for('home',username=username))
 
 @app.route('/<int:companyid>/deleteRetail/<locationid>', methods=['POST'])
