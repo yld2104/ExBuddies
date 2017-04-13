@@ -1200,7 +1200,7 @@ def searchCompany(username):
       for res in cursor:
         companydata = dict(companyid=res['id'], name = res['name'], industry = res['industry'], commodities=res['commodities'])
         companies.append(companydata)
-    cursor.close()
+      cursor.close()
 
     #Search by Industry(name,industry,commodities)
     if method=='industry':
@@ -1208,7 +1208,7 @@ def searchCompany(username):
       for res in cursor:
         companydata = dict(companyid=res['id'], name = res['name'], industry = res['industry'], commodities=res['commodities'])
         companies.append(companydata)
-    cursor.close()
+      cursor.close()
 
     #Search by Commodities(name,industry,commodities)
     if method=='commodities':
@@ -1216,7 +1216,7 @@ def searchCompany(username):
       for res in cursor:
         companydata = dict(companyid=res['id'], name = res['name'], industry = res['industry'], commodities=res['commodities'])
         companies.append(companydata)
-    cursor.close()
+      cursor.close()
 
     context = dict(user = username, companies=companies)
 
