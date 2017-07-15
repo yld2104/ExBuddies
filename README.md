@@ -1,10 +1,10 @@
-#COMS W4111 Course Project
-###The PostgreSQL account: yld2104
-###Members: Yingfan Linda Du, Jason Cheuk Nam Liang
-###The URL of your web application: http://35.185.113.189:8111/
+# COMS W4111 Course Project
+### The PostgreSQL account: yld2104
+### Members: Yingfan Linda Du, Jason Cheuk Nam Liang
+### The URL of your web application: http://35.185.113.189:8111/
 
-###Parts implemented:
-####User View of the Application -
+### Parts implemented:
+#### User View of the Application -
 * A user can register for a new account by providing his/her name, email, location and creating a valid username and password.
 * On the homepage after logging in, users are greeted with recent posts in order of time by the user and their ExBuds. 
 * On the sidebar of the homepage, current friends and pending friends displayed and the user can add/remove their friends. Groups that are managed by the user are also displayed with options to delete the group as well edit the group.
@@ -21,22 +21,22 @@ Side note: new tags can be added through either the editGroup form or createGrou
 * On an event’s profile page, the user can see the sponsoring companies of the event, and by clicking the company name, the web-app will direct the user to the company’s main page. The event main page also includes an “interested” button and “going” button which allows the user to indicate his/her preference whether or not to attend the event (“interested” and “going” can also be cancelled) 
 * Users can search for companies by their name, industry, or commodities. On a company’s profile page, the user can see the company’s retail locations, sponsored events and the company’s recent posts. The user can also write comments on a company’s post.
 * Finally the user can click “logout” which directs the user to the login page.
-####Company View of the Application -
+#### Company View of the Application -
 * Can make a company profile through link on company index page that takes the user to a form.
 * Companies are greeted table of events they are sponsoring as well recent posts they have made. On the sidebar is a list of its retail locations as well as option for company to add more retail locations.
 * Companies can search for an event by name or group through the events tab.
 * Clicking an event name will take the company to the event’s profile page which looks similar to the user’s view. Instead of “interested/going,” companies have the option to sponsor the event or unsponsor.
 * Clicking on any group’s name takes the company to the group’s profile page that looks similar to the user’s view. However, companies can only reply to posts in a group and cannot post directly to the group (to minimize ads presence in these groups).
 
-####General Notable Features -
+#### General Notable Features -
 * In both views, posts are diplayed with any comments made. Users/Companies can comment on any post.
 * In both views, users can delete any post/comment that were created by them.
 
-###Parts not implemented:
+### Parts not implemented:
 * Since we already implemented a login page for ordinary users , we did not implement the login page for companies (which is essentially the same as that for ordinary users) since we believe that this is not crucial to demonstrate our app’s interaction with our database. Instead for convenience we created a “Company View” tab for institutional users to access their own pages and write posts about events. 
 * We did not implement the “like post” functionality since we already demonstrated multiple complex interactions between tables within our web-app and already have 15 relations, such that adding this functionality will over complicate our design. 
 
-###Added feature:
+### Added feature:
 * The comments feature (ability to comment on a post), as described above, was added to further enhance interactions between users posts and companies. To do this, we added an optional responseto attribute to the posts table.
 
 ###Two interesting pages and the reason why they are interesting:
